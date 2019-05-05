@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         {
             var existingItem = Find(downloadItem.DownloadId);
 
-            if (existingItem != null && existingItem.State != TrackedDownloadStage.Downloading)
+            if (existingItem != null && existingItem.State != TrackedDownloadState.Downloading)
             {
                 LogItemChange(existingItem, existingItem.DownloadItem, downloadItem);
 
@@ -174,16 +174,16 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
         }
 
-        private static TrackedDownloadStage GetStateFromHistory(HistoryEventType eventType)
+        private static TrackedDownloadState GetStateFromHistory(HistoryEventType eventType)
         {
             switch (eventType)
             {
                 case HistoryEventType.DownloadFolderImported:
-                    return TrackedDownloadStage.Imported;
+                    return TrackedDownloadState.Imported;
                 case HistoryEventType.DownloadFailed:
-                    return TrackedDownloadStage.DownloadFailed;
+                    return TrackedDownloadState.Failed;
                 default:
-                    return TrackedDownloadStage.Downloading;
+                    return TrackedDownloadState.Downloading;
             }
         }
     }

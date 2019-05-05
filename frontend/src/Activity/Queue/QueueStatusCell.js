@@ -37,7 +37,8 @@ function QueueStatusCell(props) {
   const {
     sourceTitle,
     status,
-    trackedDownloadStatus = 'Ok',
+    trackedDownloadStatus,
+    trackedDownloadState,
     statusMessages,
     errorMessage
   } = props;
@@ -67,6 +68,18 @@ function QueueStatusCell(props) {
   if (status === 'Completed') {
     iconName = icons.DOWNLOADED;
     title = 'Downloaded';
+
+    if (trackedDownloadState === 'ReadyToImport') {
+      title += ' - Waiting to Import';
+    }
+
+    if (trackedDownloadState === 'Importing') {
+      title += ' - Importing';
+    }
+
+    if (trackedDownloadState === 'FailedPending') {
+      title += ' - Waiting to Process';
+    }
   }
 
   if (status === 'Delay') {
@@ -125,9 +138,15 @@ function QueueStatusCell(props) {
 QueueStatusCell.propTypes = {
   sourceTitle: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  trackedDownloadStatus: PropTypes.string,
+  trackedDownloadStatus: PropTypes.string.isRequired,
+  trackedDownloadState: PropTypes.string.isRequired,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string
+};
+
+QueueStatusCell.defaultProps = {
+  trackedDownloadStatus: 'Ok',
+  trackedDownloadState: 'Downloading'
 };
 
 export default QueueStatusCell;

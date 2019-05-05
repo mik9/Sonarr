@@ -149,6 +149,10 @@
     <Compile Include="DecisionEngine\Specifications\RepackSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\MultiSeasonSpecification.cs" />
     <Compile Include="DecisionEngine\Specifications\UpgradeAllowedSpecification.cs" />
+    <Compile Include="Download\DownloadsProcesseEvent.cs" />
+    <Compile Include="Download\DownloadProcessingService.cs" />
+    <Compile Include="Download\ProcessMonitoredDownloadsCommand.cs" />
+    <Compile Include="Download\RefreshMonitoredDownloadsCommand.cs" />
     <Compile Include="Exceptions\DownloadClientRejectedReleaseException.cs" />
     <Compile Include="Exceptions\SearchFailedException.cs" />
     <Compile Include="Extras\Metadata\MetadataSectionType.cs" />
@@ -387,7 +391,6 @@
     <Compile Include="DecisionEngine\Specifications\UpgradeDiskSpecification.cs" />
     <Compile Include="DiskSpace\DiskSpace.cs" />
     <Compile Include="DiskSpace\DiskSpaceService.cs" />
-    <Compile Include="Download\CheckForFinishedDownloadCommand.cs" />
     <Compile Include="Download\Clients\Blackhole\ScanWatchFolder.cs" />
     <Compile Include="Download\Clients\Blackhole\WatchFolderItem.cs" />
     <Compile Include="Download\Clients\Deluge\Deluge.cs" />

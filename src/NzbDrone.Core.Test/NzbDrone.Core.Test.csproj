@@ -188,7 +188,8 @@
     <Compile Include="DecisionEngineTests\BlockedIndexerSpecificationFixture.cs" />
     <Compile Include="DecisionEngineTests\UpgradeDiskSpecificationFixture.cs" />
     <Compile Include="DiskSpace\DiskSpaceServiceFixture.cs" />
-    <Compile Include="Download\CompletedDownloadServiceFixture.cs" />
+    <Compile Include="Download\CompletedDownloadServiceTests\ImportFixture.cs" />
+    <Compile Include="Download\CompletedDownloadServiceTests\ProcessFixture.cs" />
     <Compile Include="Download\DownloadApprovedReportsTests\DownloadApprovedFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\ScanWatchFolderFixture.cs" />
     <Compile Include="Download\DownloadClientTests\Blackhole\TorrentBlackholeFixture.cs" />
@@ -214,7 +215,8 @@
     <Compile Include="Download\DownloadClientTests\UTorrentTests\UTorrentFixture.cs" />
     <Compile Include="Download\DownloadClientTests\VuzeTests\VuzeFixture.cs" />
     <Compile Include="Download\DownloadServiceFixture.cs" />
-    <Compile Include="Download\FailedDownloadServiceFixture.cs" />
+    <Compile Include="Download\FailedDownloadServiceTests\ProcessFailedFixture.cs" />
+    <Compile Include="Download\FailedDownloadServiceTests\ProcessFixture.cs" />
     <Compile Include="Download\NzbValidationServiceFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\PendingReleaseServiceFixture.cs" />
     <Compile Include="Download\Pending\PendingReleaseServiceTests\RemovePendingFixture.cs" />

@@ -68,6 +68,7 @@ class QueueRow extends Component {
       title,
       status,
       trackedDownloadStatus,
+      trackedDownloadState,
       statusMessages,
       errorMessage,
       series,
@@ -129,6 +130,7 @@ class QueueRow extends Component {
                   sourceTitle={title}
                   status={status}
                   trackedDownloadStatus={trackedDownloadStatus}
+                  trackedDownloadState={trackedDownloadState}
                   statusMessages={statusMessages}
                   errorMessage={errorMessage}
                 />
@@ -365,6 +367,7 @@ QueueRow.propTypes = {
   title: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
   trackedDownloadStatus: PropTypes.string,
+  trackedDownloadState: PropTypes.string,
   statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
   series: PropTypes.object,
