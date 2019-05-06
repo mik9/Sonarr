@@ -43,8 +43,8 @@ function QueueStatusCell(props) {
     errorMessage
   } = props;
 
-  const hasWarning = trackedDownloadStatus === 'Warning';
-  const hasError = trackedDownloadStatus === 'Error';
+  const hasWarning = trackedDownloadStatus === 'warning';
+  const hasError = trackedDownloadStatus === 'error';
 
   // status === 'downloading'
   let iconName = icons.DOWNLOADING;
@@ -69,15 +69,15 @@ function QueueStatusCell(props) {
     iconName = icons.DOWNLOADED;
     title = 'Downloaded';
 
-    if (trackedDownloadState === 'ReadyToImport') {
+    if (trackedDownloadState === 'importPending') {
       title += ' - Waiting to Import';
     }
 
-    if (trackedDownloadState === 'Importing') {
+    if (trackedDownloadState === 'importing') {
       title += ' - Importing';
     }
 
-    if (trackedDownloadState === 'FailedPending') {
+    if (trackedDownloadState === 'failedPending') {
       title += ' - Waiting to Process';
     }
   }

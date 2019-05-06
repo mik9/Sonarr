@@ -101,7 +101,7 @@ class QueueRow extends Component {
     } = this.state;
 
     const progress = 100 - (sizeleft / size * 100);
-    const showInteractiveImport = status === 'Completed' && trackedDownloadStatus === 'Warning';
+    const showInteractiveImport = status === 'Completed' && trackedDownloadStatus === 'warning';
     const isPending = status === 'Delay' || status === 'DownloadClientUnavailable';
 
     return (
