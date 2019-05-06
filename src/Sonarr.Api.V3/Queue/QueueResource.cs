@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Download;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
@@ -57,7 +57,7 @@ namespace Sonarr.Api.V3.Queue
                 Sizeleft = model.Sizeleft,
                 Timeleft = model.Timeleft,
                 EstimatedCompletionTime = model.EstimatedCompletionTime,
-                Status = model.Status,
+                Status = model.Status.FirstCharToLower(),
                 TrackedDownloadStatus = model.TrackedDownloadStatus,
                 TrackedDownloadState = model.TrackedDownloadState,
                 StatusMessages = model.StatusMessages,

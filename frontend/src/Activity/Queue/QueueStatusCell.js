@@ -55,17 +55,17 @@ function QueueStatusCell(props) {
     iconKind = kinds.WARNING;
   }
 
-  if (status === 'Paused') {
+  if (status === 'paused') {
     iconName = icons.PAUSED;
     title = 'Paused';
   }
 
-  if (status === 'Queued') {
+  if (status === 'queued') {
     iconName = icons.QUEUED;
     title = 'Queued';
   }
 
-  if (status === 'Completed') {
+  if (status === 'completed') {
     iconName = icons.DOWNLOADED;
     title = 'Downloaded';
 
@@ -82,31 +82,31 @@ function QueueStatusCell(props) {
     }
   }
 
-  if (status === 'Delay') {
+  if (status === 'delay') {
     iconName = icons.PENDING;
     title = 'Pending';
   }
 
-  if (status === 'DownloadClientUnavailable') {
+  if (status === 'downloadClientUnavailable') {
     iconName = icons.PENDING;
     iconKind = kinds.WARNING;
     title = 'Pending - Download client is unavailable';
   }
 
-  if (status === 'Failed') {
+  if (status === 'failed') {
     iconName = icons.DOWNLOADING;
     iconKind = kinds.DANGER;
     title = 'Download failed';
   }
 
-  if (status === 'Warning') {
+  if (status === 'warning') {
     iconName = icons.DOWNLOADING;
     iconKind = kinds.WARNING;
     title = `Download warning: ${errorMessage || 'check download client for more details'}`;
   }
 
   if (hasError) {
-    if (status === 'Completed') {
+    if (status === 'completed') {
       iconName = icons.DOWNLOAD;
       iconKind = kinds.DANGER;
       title = `Import failed: ${sourceTitle}`;
