@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Download
                 }
             }
 
-            trackedDownload.State = TrackedDownloadState.ReadyToImport;
+            trackedDownload.State = TrackedDownloadState.ImportPending;
         }
 
         public void Import(TrackedDownload trackedDownload)
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            trackedDownload.State = TrackedDownloadState.ReadyToImport;
+            trackedDownload.State = TrackedDownloadState.ImportPending;
 
             if (importResults.Empty())
             {

@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download
                     _failedDownloadService.ProcessFailed(trackedDownload);
                 }
 
-                if (enableCompletedDownloadHandling && trackedDownload.State == TrackedDownloadState.ReadyToImport)
+                if (enableCompletedDownloadHandling && trackedDownload.State == TrackedDownloadState.ImportPending)
                 {
                     _completedDownloadService.Import(trackedDownload);
                 }

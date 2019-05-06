@@ -181,12 +181,12 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
 
         private void AssertNotReadyToImport()
         {
-            _trackedDownload.State.Should().NotBe(TrackedDownloadState.ReadyToImport);
+            _trackedDownload.State.Should().NotBe(TrackedDownloadState.ImportPending);
         }
 
         private void AssertReadyToImport()
         {
-            _trackedDownload.State.Should().Be(TrackedDownloadState.ReadyToImport);
+            _trackedDownload.State.Should().Be(TrackedDownloadState.ImportPending);
         }
     }
 }
