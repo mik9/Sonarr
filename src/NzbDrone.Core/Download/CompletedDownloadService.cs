@@ -102,7 +102,9 @@ namespace NzbDrone.Core.Download
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
             var importResults = _downloadedEpisodesImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteEpisode.Series, trackedDownload.DownloadItem);
 
-            if (importResults.Count(c => c.Result == ImportResultType.Imported) >= Math.Max(1, trackedDownload.RemoteEpisode.Episodes.Count))
+            if (importResults.Where(c => c.Result == ImportResultType.Imported)
+                             .SelectMany(c => c.ImportDecision.LocalEpisode.Episodes)
+                             .Count() >= Math.Max(1, trackedDownload.RemoteEpisode.Episodes.Count))
             {
                 trackedDownload.State = TrackedDownloadState.Imported;
                 _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
