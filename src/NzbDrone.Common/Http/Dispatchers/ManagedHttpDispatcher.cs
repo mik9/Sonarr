@@ -39,7 +39,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                 //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
                 webRequest.AutomaticDecompression = DecompressionMethods.GZip;
             }
-            
+
             webRequest.Method = request.Method.ToString();
             webRequest.UserAgent = _userAgentBuilder.GetUserAgent(request.UseSimplifiedUserAgent);
             webRequest.KeepAlive = request.ConnectionKeepAlive;
@@ -58,87 +58,94 @@ namespace NzbDrone.Common.Http.Dispatchers
                 AddRequestHeaders(webRequest, request.Headers);
             }
 
-            HttpWebResponse httpWebResponse;
+            HttpWebResponse httpWebResponse = null;
 
             try
             {
-                if (request.ContentData != null)
+                try
                 {
-                    webRequest.ContentLength = request.ContentData.Length;
-                    using (var writeStream = webRequest.GetRequestStream())
+                    if (request.ContentData != null)
                     {
-                        writeStream.Write(request.ContentData, 0, request.ContentData.Length);
-                    }
-                }
-
-                httpWebResponse = (HttpWebResponse)webRequest.GetResponse();
-            }
-            catch (WebException e)
-            {
-                if (e.Status == WebExceptionStatus.SecureChannelFailure && OsInfo.IsWindows)
-                {
-                    SecurityProtocolPolicy.DisableTls12();
-                }
-
-                httpWebResponse = (HttpWebResponse)e.Response;
-
-                if (httpWebResponse == null)
-                {
-                    // The default messages for WebException on mono are pretty horrible.
-                    if (e.Status == WebExceptionStatus.NameResolutionFailure)
-                    {
-                        throw new WebException($"DNS Name Resolution Failure: '{webRequest.RequestUri.Host}'", e.Status);
-                    }
-                    else if (e.ToString().Contains("TLS Support not"))
-                    {
-                        throw new TlsFailureException(webRequest, e);
-                    }
-                    else if (e.ToString().Contains("The authentication or decryption has failed."))
-                    {
-                        throw new TlsFailureException(webRequest, e);
-                    }
-                    else if (OsInfo.IsNotWindows)
-                    {
-                        throw new WebException($"{e.Message}: '{webRequest.RequestUri}'", e, e.Status, e.Response);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-
-            byte[] data = null;
-
-            using (var responseStream = httpWebResponse.GetResponseStream())
-            {
-                if (responseStream != null && responseStream != Stream.Null)
-                {
-                    try
-                    {
-                        data = responseStream.ToBytes();
-
-                        if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
+                        webRequest.ContentLength = request.ContentData.Length;
+                        using (var writeStream = webRequest.GetRequestStream())
                         {
-                            using (var compressedStream = new MemoryStream(data))
-                            using (var gzip = new GZipStream(compressedStream, CompressionMode.Decompress))
-                            using (var decompressedStream = new MemoryStream())
-                            {
-                                gzip.CopyTo(decompressedStream);
-                                data = decompressedStream.ToArray();
-                            }
-
-                            httpWebResponse.Headers.Remove("Content-Encoding");
+                            writeStream.Write(request.ContentData, 0, request.ContentData.Length);
                         }
                     }
-                    catch (Exception ex)
+
+                    httpWebResponse = (HttpWebResponse)webRequest.GetResponse();
+                }
+                catch (WebException e)
+                {
+                    if (e.Status == WebExceptionStatus.SecureChannelFailure && OsInfo.IsWindows)
                     {
-                        throw new WebException("Failed to read complete http response", ex, WebExceptionStatus.ReceiveFailure, httpWebResponse);
+                        SecurityProtocolPolicy.DisableTls12();
+                    }
+
+                    httpWebResponse = (HttpWebResponse)e.Response;
+
+                    if (httpWebResponse == null)
+                    {
+                        // The default messages for WebException on mono are pretty horrible.
+                        if (e.Status == WebExceptionStatus.NameResolutionFailure)
+                        {
+                            throw new WebException($"DNS Name Resolution Failure: '{webRequest.RequestUri.Host}'", e.Status);
+                        }
+                        else if (e.ToString().Contains("TLS Support not"))
+                        {
+                            throw new TlsFailureException(webRequest, e);
+                        }
+                        else if (e.ToString().Contains("The authentication or decryption has failed."))
+                        {
+                            throw new TlsFailureException(webRequest, e);
+                        }
+                        else if (OsInfo.IsNotWindows)
+                        {
+                            throw new WebException($"{e.Message}: '{webRequest.RequestUri}'", e, e.Status, e.Response);
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
-            }
 
-            return new HttpResponse(request, new HttpHeader(httpWebResponse.Headers), data, httpWebResponse.StatusCode);
+                byte[] data = null;
+
+                using (var responseStream = httpWebResponse.GetResponseStream())
+                {
+                    if (responseStream != null && responseStream != Stream.Null)
+                    {
+                        try
+                        {
+                            data = responseStream.ToBytes();
+
+                            if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
+                            {
+                                using (var compressedStream = new MemoryStream(data))
+                                using (var gzip = new GZipStream(compressedStream, CompressionMode.Decompress))
+                                using (var decompressedStream = new MemoryStream())
+                                {
+                                    gzip.CopyTo(decompressedStream);
+                                    data = decompressedStream.ToArray();
+                                }
+
+                                httpWebResponse.Headers.Remove("Content-Encoding");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new WebException("Failed to read complete http response", ex, WebExceptionStatus.ReceiveFailure, httpWebResponse);
+                        }
+                    }
+                }
+
+                return new HttpResponse(request, new HttpHeader(httpWebResponse.Headers), data, httpWebResponse.StatusCode);
+            }
+            finally
+            {
+                (httpWebResponse as IDisposable)?.Dispose();
+            }
         }
 
         protected virtual void AddProxy(HttpWebRequest webRequest, HttpRequest request)
